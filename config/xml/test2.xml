@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ReportNote xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="shema.xsd" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<xi:include href="ReportNote.txt" parse="text">
+		<xi:fallback>ReportNote.txt not found</xi:fallback>
+	</xi:include>
+</ReportNote>
