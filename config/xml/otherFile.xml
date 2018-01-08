@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scope name="inlcudedScope">
-    This is an <important>included</important> scope.
+<scope name="inlcudedScope1">
+    This is an <important>included1</important> scope.
 </scope>

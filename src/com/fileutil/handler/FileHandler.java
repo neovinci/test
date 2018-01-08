@@ -1,7 +1,10 @@
 package com.fileutil.handler;
 
 import com.fileutil.FileNameFilter;
+import com.fileutil.entity.ReportNote;
+import com.fileutil.unmarshal.UnmarshallerUtil;
 
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.MarshalException;
 import javax.xml.bind.ValidationException;
 import java.io.File;
@@ -14,11 +17,12 @@ public class FileHandler {
 	public boolean execute(File configDir) throws FileNotFoundException, MarshalException, ValidationException
 	{
 		boolean retVal = false;
+		List<ReportNote> reportNotes = null;
 
 		try
 		{
 			FileNameFilter customFileNameFilter = new FileNameFilter();
-			customFileNameFilter.setContains("PointOfSaleManageSvRQ");
+			customFileNameFilter.setContains("test");
 			customFileNameFilter.setEndsWith(".xml");
 
 			List<File> configFiles = new ArrayList<>();
@@ -26,60 +30,28 @@ public class FileHandler {
 			addConfigurationFiles(configFiles, configDir, customFileNameFilter);
 
 
-//			if (!configFiles.isEmpty())
-//			{
-//					for (File configFile : configFiles)
-//					{
-//						Reader replacedPOS = replaceProperties(configFile);
-//						PointOfSaleManageSvRQ pointOfSaleManageSvRQ = (PointOfSaleManageSvRQ) CastorUtil.unmarshall(replacedPOS,
-//								PointOfSaleManageSvRQ.class);
-//						PointOfSaleCreateRQ[] pointOfSaleCreateRQAry = pointOfSaleManageSvRQ.getPointOfSaleCreateRQ();
-//						for (PointOfSaleCreateRQ pointOfSaleCreateRQ : pointOfSaleCreateRQAry)
-//						{
-//							String posCode = pointOfSaleCreateRQ.getCreatePointOfSale().getPointOfSale()
-//									.getPointOfSaleCode();
-//
-//							Number posVersion = getPOSVersion(posCode, posSearch, dbAccess);
-//
-//							if (posVersion != null)
-//							{
-//								boolean overwrite = confirmOverwrite("A Point of Sale " + posCode
-//										+ " already exists in the database.\nDo you want to overwite it?");
-//
-//								if (overwrite)
-//								{
-//									getUIUtil().displayMessage("Overwriting Existing Point Of Sale - Code: %s", posCode);
-//
-//									pointOfSaleCreateRQ.getCreatePointOfSale().getPointOfSale().setPointOfSaleVersion(
-//											posVersion.intValue());
-//
-//									installPOS(pointOfSaleCreateRQ.getCreatePointOfSale().getPointOfSale(),
-//											true, posModify, dbAccess);
-//								}
-//								else
-//								{
-//									getUIUtil().displayMessage("Skipping Overwriting of Point Of Sale - Code: %s", posCode);
-//								}
-//							}
-//							else
-//							{
-//								// Install
-//								getUIUtil().displayMessage("Installing Point Of Sale - Code: %s", posCode);
-//								installPOS(pointOfSaleCreateRQ.getCreatePointOfSale().getPointOfSale(), false, posCreate, dbAccess);
-//							}
-//						}
-//					}
-//				}
-//			else
-//			{
-//				getUIUtil().displayMessage("Nothing to do... No Point Of Sale Manage Configuration Files Found");
-//			}
+			if (!configFiles.isEmpty())
+			{
+				reportNotes = new ArrayList<>();
+				for (File configFile : configFiles)	{
+					ReportNote reportNote = (ReportNote) UnmarshallerUtil.unmarshal(configFile, "com.fileutil.entity");
+					reportNotes.add(reportNote);
+				}
+			} else
+			{
+				System.out.println("Nothing to do... No Point Of Sale Manage Configuration Files Found");
+			}
 
 			retVal = true;
-		}
-		finally
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} finally
 		{
 //			rollbackOrCommitAndRelease(dbAccess, dbServer, retVal);
+		}
+
+		for (ReportNote reportNote : reportNotes) {
+			System.out.println(reportNote.toString());
 		}
 
 		return retVal;

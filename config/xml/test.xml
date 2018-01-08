@@ -2,11 +2,9 @@
 <?xml-stylesheet type="text/xsl" href="test.xsl"?>
 <ReportNote xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="shema.xsd" xmlns:xi="http://www.w3.org/2001/XInclude">
-	<xi:include href="otherFile.xml"/>	
-	<xi:include href="otherFile.xml"/>
-	<scope name="Dresden">
-		<important>
-			Some
-		</important>
-	</scope>
+    <scope name="ScopeBase">
+        This is an <important>ScopeBase</important> scope.
+    </scope>
+    <xi:include href="D:\\Study\\local_repo\\test\\config\\xml\\otherFile.xml"/>
+    <xi:include href="D:\\Study\\local_repo\\test\\config\\xml\\otherFile2.xml"/>
 </ReportNote>
